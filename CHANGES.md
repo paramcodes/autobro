@@ -437,7 +437,7 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 ---
 
-## 24. 2026-09-20 — `createWorkflow` data function
+## 24. `defbf95` — 2026-09-20 — `createWorkflow` data function
 
 **Files:**
 - `features/workflows/data.ts` (modified — added `createWorkflow(orgId, name)`)
