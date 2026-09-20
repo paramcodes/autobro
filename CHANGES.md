@@ -384,3 +384,22 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Neon skills now resolve from both `.agents/skills/` and `.grok/skills/`; `.grok/` stays canonical so `neon skills update` keeps working in place; `skills-lock.json` untouched (tracks source/hash, not path).
+
+---
+
+## 21. `b4c3fab` — 2026-09-20 — Drizzle ORM with Neon (HTTP driver)
+
+**Files:**
+- `package.json`, `bun.lock` — added `drizzle-orm@0.45.2`, `@neondatabase/serverless@1.1.0`, `dotenv@18.0.1`, `drizzle-kit@0.31.10` (dev)
+- `package.json` scripts — added `db:generate`, `db:migrate`, `db:studio`, `db:check`
+- `drizzle.config.ts` (added — schema `./db/schema.ts`, out `./drizzle`, `postgresql` dialect, direct `DATABASE_URL_UNPOOLED` from `.env.local`)
+- `db/index.ts` (added — `drizzle-orm/neon-http` client over pooled `DATABASE_URL`)
+- `db/schema.ts` (added — empty placeholder with commented `demo_users` example)
+
+**Exact change:**
+- Followed `neon` + `neon-postgres` skills and https://neon.com/docs/guides/drizzle: HTTP driver for Next.js serverless, pooled URL for app traffic, direct URL for Drizzle Kit migrations, schema-as-code in `db/`.
+- No tables created yet; domain tables get added to `db/schema.ts` then `bun run db:generate && bun run db:migrate`.
+
+**What it did:**
+- `bun run typecheck` passes; `bunx drizzle-kit check` passes ("Everything's fine").
+- Verified live: `select 1` via raw `neon()` and via `db.execute()` both return `{ok: 1}` against the linked Neon project (`flat-cake-92718317`, `production` branch).
