@@ -601,3 +601,20 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - `bun run typecheck` (`tsc --noEmit`) passes.
 - Verified end-to-end 2026-09-20: user completed `npx trigger.dev@latest login` (acct `sparamveer1001@gmail.com`, project `autobro` / `proj_kxwhzprencmwzpqaxxdy`), dev `TRIGGER_SECRET_KEY` stored in gitignored `.env.local` (never committed), `npx trigger.dev@latest dev` → `Local worker ready on branch: default [node] -> 20260920.1`, triggered `hello-world` (`{ name: "dev-check" }`) → `run_06gbtoi17emi0oudm7kltc0q01`, worker logged `Hello dev-check!` → Success (32ms). Confirm `hello-world` in dashboard: https://cloud.trigger.dev/orgs/param-f363/projects/autobro-tfla .
+
+---
+
+## 34. `0b69a1e` — 2026-09-20 — Extract inspector into RightSidebar with Run button
+
+**Files:**
+- `features/workflows/components/right-sidebar.tsx` (added — `RightSidebar()`, `"use client"`)
+- `features/workflows/components/workflow-shell.tsx` (modified — right panel renders `<RightSidebar />`)
+
+**Exact change:**
+- Moved the right inspector panel content out of `WorkflowShell` into new `RightSidebar` component.
+- Replaced centered `Inspector` placeholder div with centered `@/components/ui/button.tsx` `<Button>` containing lucide `Play` icon + `Run` text.
+- `WorkflowShell` imports `RightSidebar` from `./right-sidebar` and renders it inside the right `ResizablePanel` (`defaultSize="16rem" minSize="14rem" maxSize="36rem"`).
+
+**What it did:**
+- `/workflows/[id]` right panel now shows a Run button instead of Inspector text, with inspector UI isolated for future work.
+- `npm run typecheck` (`tsc --noEmit`) passes.
