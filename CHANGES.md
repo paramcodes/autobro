@@ -478,3 +478,20 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Gives UI a single authed entry point for creating workflows: no org → hard error, success → layout cache purged + navigated to the new workflow page.
 - `bunx tsc --noEmit` passes.
+
+---
+
+## 27. `8309aeb` — 2026-09-20 — `listWorkflows` wired into sidebar nav
+
+**Files:**
+- `components/app-sidebar.tsx` (modified — async server component, `auth()` + `listWorkflows`)
+- `features/workflows/components/workflow-nav.tsx` (modified — `workflows` prop, dummy list removed)
+
+**Exact change:**
+- `AppSidebar` is now `async`: `const { orgId } = await auth()` (`@clerk/nextjs/server`), `const workflows = orgId ? await listWorkflows(orgId) : []`, passed as `<WorkflowNav workflows={workflows} />`.
+- `WorkflowNav({ workflows }: { workflows: Workflow[] })` (type from `@/db/schema`): dummy string array deleted, both collapsed/popover and expanded branches map real rows with `key={workflow.id}`, label/tooltip `workflow.name`; `isActive={index === 0}` removed (active item deferred).
+- Renamed lucide import to `Workflow as WorkflowIcon` to avoid collision with the `Workflow` DB type.
+
+**What it did:**
+- Sidebar nav renders real org-scoped workflows (newest first via `listWorkflows` ordering); no org → empty list, no hard error.
+- `npm run typecheck` (`tsc --noEmit`) passes.
