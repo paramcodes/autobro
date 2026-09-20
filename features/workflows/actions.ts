@@ -20,5 +20,5 @@ export async function runWorkflowAction(name?: string) {
   const handle = await tasks.trigger<typeof helloWorld>("hello-world", {
     name: name ?? "autobro",
   });
-  return { id: handle.id };
+  return { id: handle.id, publicAccessToken: handle.publicAccessToken };
 }
