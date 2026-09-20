@@ -562,3 +562,22 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Each workflow in the sidebar links to its own `/workflows/{id}` page, and the currently open workflow shows as selected via `isActive`.
 - `npx tsc --noEmit` passes.
+
+---
+
+## 32. `fb4b01e` — 2026-09-20 — WorkflowShell resizable editor layout
+
+**Files:**
+- `features/workflows/components/workflow-shell.tsx` (added — `WorkflowShell({ workflowId })`, `"use client"`)
+- `app/(dashboard)/workflows/[id]/page.tsx` (modified — renders `<WorkflowShell workflowId={id}>`)
+
+**Exact change:**
+- `WorkflowShell` is a single-file layout shell with no sub-components and no data fetching: outer horizontal `ResizablePanelGroup` (`className="size-full"`, `data-workflow-id`) with two panels and a `ResizableHandle` between them.
+- Left panel (`minSize="30rem"`) holds a vertical `ResizablePanelGroup` (`size-full`) with top canvas panel (`minSize="18rem"`, label `Canvas`) + handle + bottom logs panel (`defaultSize="8rem" minSize="6rem"`, label `Logs`).
+- Right inspector panel (`defaultSize="16rem" minSize="14rem" maxSize="36rem"`, label `Inspector`).
+- All panel sizes are rem strings (react-resizable-panels v4 CSS-unit mode), imported from `@/components/ui/resizable`.
+- `[id]/page.tsx` stays an async server component, awaits `params`, and returns only `<WorkflowShell workflowId={id} />` (previous centered `Workflow {id}` placeholder removed).
+
+**What it did:**
+- `/workflows/[id]` now renders the editor shell: resizable canvas/logs column + inspector, with placeholder labels until real canvas/logs/inspector components land.
+- `npm run typecheck` (`tsc --noEmit`) passes.
