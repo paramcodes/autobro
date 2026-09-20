@@ -634,3 +634,21 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Clicking Run in `/workflows/[id]` triggers the `hello-world` Trigger.dev task (requires `TRIGGER_SECRET_KEY` + `trigger dev` running).
 - `npx tsc --noEmit` passes. (`npx eslint` on touched files fails on pre-existing `eslint-plugin-react` / ESLint 10 incompatibility, unrelated to this change.)
+
+---
+
+## 36. `74fb8ac` — 2026-09-20 — Live run feedback in RightSidebar via useRealtimeRun
+
+**Files:**
+- `package.json`, `bun.lock` — added `@trigger.dev/react-hooks@4.6.3` (matches `@trigger.dev/sdk@4.6.3`)
+- `features/workflows/actions.ts` (modified — `runWorkflowAction` also returns `handle.publicAccessToken`)
+- `features/workflows/components/right-sidebar.tsx` (modified — `RunFeedback` panel with `useRealtimeRun`)
+
+**Exact change:**
+- Per `trigger-realtime-and-frontend` skill (and the version-pinned SDK skill + `docs/realtime/`): no new token minting needed — the `RunHandle` from `tasks.trigger()` already carries an auto-generated `publicAccessToken` scoped to the triggered run (15-min expiry), so the server action returns `{ id, publicAccessToken }`.
+- New `RunFeedback` client component subscribes with `useRealtimeRun<typeof helloWorld>(runId, { accessToken })` (type-only task import, so typed `run.output.message`/`timestamp`) and renders live `run.status` (green COMPLETED / red terminal-failure / blue in-flight), the run id, and the task output message + timestamp. It only mounts after the trigger returns a handle (never subscribes before the handle exists), and keeps the `"use client"` boundary the hooks require.
+- Success toast removed (the panel now shows the run id + status); error toast kept for trigger failures.
+
+**What it did:**
+- Clicking Run now shows live status/output of the `hello-world` run updating in the right sidebar without polling.
+- `npx tsc --noEmit` passes.
