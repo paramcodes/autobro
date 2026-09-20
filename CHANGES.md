@@ -618,3 +618,19 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - `/workflows/[id]` right panel now shows a Run button instead of Inspector text, with inspector UI isolated for future work.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 35. `d3b87a4` — 2026-09-20 — Trigger hello-world from Run button via server action
+
+**Files:**
+- `features/workflows/actions.ts` (modified — added `runWorkflowAction`)
+- `features/workflows/components/right-sidebar.tsx` (modified — Run button calls `runWorkflowAction`)
+
+**Exact change:**
+- Added `runWorkflowAction(name?: string)` server action per `trigger-authoring-tasks` / `trigger-getting-started` skills: type-only `import type { helloWorld } from "@/src/trigger/hello"` plus `tasks.trigger<typeof helloWorld>("hello-world", { name })` from `@trigger.dev/sdk` (task instance never bundled into the app), returns `{ id: handle.id }`.
+- `RightSidebar` (client) calls the action inside `useTransition` on click, disables the button with `Running...` label while pending, and toasts success (`Workflow run triggered: <run id>`) or failure via app-wide Sonner `Toaster`.
+
+**What it did:**
+- Clicking Run in `/workflows/[id]` triggers the `hello-world` Trigger.dev task (requires `TRIGGER_SECRET_KEY` + `trigger dev` running).
+- `npx tsc --noEmit` passes. (`npx eslint` on touched files fails on pre-existing `eslint-plugin-react` / ESLint 10 incompatibility, unrelated to this change.)
