@@ -669,3 +669,22 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - `/workflows/[id]` canvas panel renders identically, with canvas UI isolated for future work.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 38. `d5bffbe` — 2026-09-20 — Basic interactive React Flow canvas
+
+**Files:**
+- `package.json`, `bun.lock` — added `@xyflow/react@12.11.6` (`bun add @xyflow/react`)
+- `app/globals.css` (modified — `@import "@xyflow/react/dist/style.css"` after the tailwind/clerk imports)
+- `features/workflows/components/workflow-canvas.tsx` (modified — controlled `<ReactFlow>` flow)
+
+**Exact change:**
+- Per https://reactflow.dev/learn (Quick Start) + `building-a-flow` + `adding-interactivity` guides: `WorkflowCanvas` (still `"use client"`) holds `nodes`/`edges` in `useState`, wires `onNodesChange`/`onEdgesChange` via `applyNodeChanges`/`applyEdgeChanges` and `onConnect` via `addEdge` (all `useCallback`), renders `<ReactFlow nodes edges … fitView>` with `<Background />` + `<Controls />` inside a `size-full` div (React Flow requires a sized parent; the resizable panel provides it).
+- Seed graph: `n1` (`input` type, label `Node 1`) → `n2` (label `Node 2`) via edge `n1-n2`.
+- Flow stylesheet imported in `globals.css`, not the component, because the docs require it to load after the `tailwindcss` import under Tailwind v4.
+- Next `server-and-client-boundary` guide checked: canvas state lives entirely in the client graph (`WorkflowShell` → `WorkflowCanvas`, both `"use client"`); `[id]/page.tsx` still passes only the serializable `workflowId` string.
+
+**What it did:**
+- `/workflows/[id]` top panel now shows a pannable/zoomable flow with two connected nodes: drag/select/delete nodes and draw new edges by dragging between handles.
+- `npm run typecheck` (`tsc --noEmit`) passes.
