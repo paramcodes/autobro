@@ -464,3 +464,17 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Gives workflows a random hyphenated slug for default names/URLs. Verified via `bun -e` import (e.g. `painful-basilisk`).
 - `bunx tsc --noEmit` passes.
+
+---
+
+## 26. `edcc07f` — 2026-09-20 — `createWorkflowAction` server action
+
+**Files:**
+- `features/workflows/actions.ts` (added — `createWorkflowAction(name)`)
+
+**Exact change:**
+- `"use server"` action: `const { orgId } = await auth()` (`@clerk/nextjs/server`, async in this version), throws `No active organization` if missing, `createWorkflow(orgId, name)` from `@/features/workflows/data`, then `revalidatePath("/", "layout")` before `redirect(`/workflows/${workflow.id}`)` (revalidate-before-redirect per Next server-actions guide; redirect throws so it runs last).
+
+**What it did:**
+- Gives UI a single authed entry point for creating workflows: no org → hard error, success → layout cache purged + navigated to the new workflow page.
+- `bunx tsc --noEmit` passes.
