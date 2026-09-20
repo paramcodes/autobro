@@ -403,3 +403,21 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - `bun run typecheck` passes; `bunx drizzle-kit check` passes ("Everything's fine").
 - Verified live: `select 1` via raw `neon()` and via `db.execute()` both return `{ok: 1}` against the linked Neon project (`flat-cake-92718317`, `production` branch).
+
+---
+
+## 22. `fc8b5c5` — 2026-09-20 — `workflows` table with `graph` jsonb
+
+**Files:**
+- `db/schema.ts` (modified — replaced placeholder with `workflows` table + `Workflow` select type)
+- `drizzle/0000_mature_legion.sql` (added — `CREATE TABLE "workflows"`)
+
+**Exact change:**
+- `workflows`: `id uuid PK default gen_random_uuid()`, `org_id text not null` (Clerk org), `name text not null`, `graph jsonb` (nullable, canvas nodes/edges), `created_at` / `updated_at timestamp default now() not null`.
+- `export type Workflow = typeof workflows.$inferSelect`.
+- `bun run db:generate` → `bun run db:migrate` (direct `DATABASE_URL_UNPOOLED`).
+
+**What it did:**
+- Table live on Neon `production` branch. Verified round-trip via `db` client: insert scratch row (uuid default + jsonb graph round-trips) → select → delete, 0 rows left.
+- `bun run typecheck` passes; `bunx drizzle-kit check` passes.
+- `WorkflowNav` still hardcoded; swapping it to DB rows is a follow-up.
