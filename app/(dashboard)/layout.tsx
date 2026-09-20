@@ -13,10 +13,10 @@ export default async function DashboardLayout({
   const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false"
 
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
+    <SidebarProvider defaultOpen={defaultOpen} className="h-svh">
       <TooltipProvider>
         <AppSidebar />
-        <SidebarInset>{children}</SidebarInset>
+        <SidebarInset className="min-h-0 overflow-hidden border shadow-none!">{children}</SidebarInset>
       </TooltipProvider>
     </SidebarProvider>
   )
