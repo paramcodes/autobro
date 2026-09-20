@@ -688,3 +688,17 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - `/workflows/[id]` top panel now shows a pannable/zoomable flow with two connected nodes: drag/select/delete nodes and draw new edges by dragging between handles.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 39. `7760f23` — 2026-09-20 — React Flow connection line type set to step
+
+**Files:**
+- `features/workflows/components/workflow-canvas.tsx` (modified — `connectionLineType` prop)
+
+**Exact change:**
+- Per https://reactflow.dev/api-reference/types/connection-line-type: imported `ConnectionLineType` from `@xyflow/react` and set `connectionLineType={ConnectionLineType.Step}` on `<ReactFlow>` (orthogonal stepped preview with sharp corners).
+
+**What it did:**
+- Dragging a new connection between handles now previews a stepped line; existing edges (default bezier) unchanged — the prop only affects the drag preview.
+- `npm run typecheck` (`tsc --noEmit`) passes.
