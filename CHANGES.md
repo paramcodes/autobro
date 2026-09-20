@@ -301,3 +301,20 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 - Dashboard: `app/(dashboard)/layout.tsx`, `app/(dashboard)/page.tsx`, `components/app-sidebar.tsx`
 - Global: `app/layout.tsx` (ClerkProvider + ThemeProvider + Toaster), `app/globals.css` (Clerk shadcn theme import), `app/test/page.tsx` (protected probe)
 - Config/docs: `next.config.ts`, `.dockerignore`, `.gitignore`, `AGENTS.md`, `CLAUDE.md`
+
+---
+
+## 16. `a558b10` — 2026-09-20 — WorkflowNav with collapsed popover list
+
+**Files:**
+- `components/app-sidebar.tsx` (modified)
+
+**Exact change:**
+- Extracted workflow list into `WorkflowNav` in the same file, using `useSidebar()` `state` to own both states.
+- Expanded: same `SidebarGroup` list as before, minus `<Workflow />` icons from items (`<span>{workflow}</span>` only, `tooltip` kept).
+- Collapsed: no list; single `SidebarMenuButton tooltip="Workflows"` with `<Workflow />` icon inside uncontrolled `<Popover>` (`PopoverTrigger asChild`, no open-state tracking); `PopoverContent side="right" align="start"` holds a `Plus` "New workflow" `SidebarMenuButton`, a `SidebarSeparator`, and the text-only workflow list.
+- No custom components or custom CSS — only default `Popover` + `Sidebar` primitives.
+
+**What it did:**
+- Expanded sidebar shows clean text-only workflow list; collapsed rail shows one workflow icon that pops the workflow list + create button, matching `design/collapsed-app-sidebar*.png`.
+- `bunx tsc --noEmit` passes.
