@@ -533,3 +533,17 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - `/workflow/[id]` renders the dynamic id, streams a centered spinner while loading, shows an `Empty`-styled retry card on runtime errors, and an `Empty`-styled back-to-workflows card on `notFound()`.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 30. `5a5797f` — 2026-09-20 — Rename workflow route to plural `workflows`
+
+**Files:**
+- `app/(dashboard)/workflow/[id]/` → `app/(dashboard)/workflows/[id]/` (`page.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx` — content unchanged, pure `git mv` rename)
+
+**Exact change:**
+- `git mv "app/(dashboard)/workflow/[id]" "app/(dashboard)/workflows/[id]"` + removed the now-empty singular dir. Diff is 4 renames at 100% similarity, 0 insertions/deletions.
+
+**What it did:**
+- Fixes the 404 on workflow creation: `createWorkflowAction` (`features/workflows/actions.ts:14`) redirects to `/workflows/${workflow.id}` (plural), but the route only served singular `/workflow/<id>`, so every new workflow landed on the default Next 404 instead of the route's `Empty`-styled `not-found` card.
+- `npm run typecheck` (`tsc --noEmit`) passes.
