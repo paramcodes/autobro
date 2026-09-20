@@ -5,6 +5,7 @@ import {
   ReactFlow,
   Background,
   Controls,
+  ConnectionLineType,
   applyEdgeChanges,
   applyNodeChanges,
   addEdge,
@@ -58,6 +59,7 @@ export function WorkflowCanvas() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        connectionLineType={ConnectionLineType.Step}
         fitView
       >
         <Background />
