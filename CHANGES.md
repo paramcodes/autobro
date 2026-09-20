@@ -584,7 +584,7 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 ---
 
-## 33. `PENDING` — 2026-09-20 — Trigger.dev setup (proj_kxwhzprencmwzpqaxxdy)
+## 33. `6414d71` — 2026-09-20 — Trigger.dev setup (proj_kxwhzprencmwzpqaxxdy)
 
 **Files:**
 - `package.json`, `bun.lock` — added `@trigger.dev/sdk@^4.6.3`, `@trigger.dev/build@^4.6.3` (dev)
