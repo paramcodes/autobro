@@ -333,3 +333,21 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Sidebar shell stays lean in `components/`; workflow nav now lives under `features/workflows/`, ready for future workflow feature work.
 - `bunx tsc --noEmit` passes.
+
+---
+
+## 18. `1ec5e31` — 2026-09-20 — Sidebar rail stays visible on small screens
+
+**Files:**
+- `components/ui/sidebar.tsx` (modified)
+- `components/app-sidebar.tsx` (modified — pre-existing local removal of the `"use client"` line rides along; harmless since all interactive children are client components)
+
+**Exact change:**
+- `Sidebar`: deleted the `if (isMobile)` Sheet-drawer branch (drawer defaulted to closed with its only trigger hidden inside it, so the sidebar vanished under 768px); the desktop rail now renders at every width.
+- Dropped the `md:` gating (`hidden md:block` → always rendered wrapper, `hidden … md:flex` → always `flex` container).
+- `toggleSidebar` now always flips desktop `open` instead of `openMobile` on mobile, so the header trigger keeps working on narrow windows and `WorkflowNav`'s `state`-driven expanded/collapsed UI stays correct.
+- Removed now-unused `Sheet*` imports and `SIDEBAR_WIDTH_MOBILE`; context shape (`openMobile`, `isMobile`, …) kept for compatibility.
+
+**What it did:**
+- Narrowing the window (or any mobile viewport) keeps the collapsible icon sidebar on screen instead of hiding it with no way back.
+- `bunx tsc --noEmit` passes. (`bunx eslint` crashes repo-wide on a pre-existing `eslint-plugin-react` incompatibility, unrelated to this change.)
