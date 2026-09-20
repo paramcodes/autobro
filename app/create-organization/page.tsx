@@ -1,9 +1,0 @@
-import { CreateOrganization } from "@clerk/nextjs"
-
-export default function CreateOrganizationPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <CreateOrganization afterCreateOrganizationUrl="/" />
-    </div>
-  )
-}
