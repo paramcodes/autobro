@@ -448,3 +448,19 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Mirrors `listWorkflows` style for writes: inserts one `workflows` row (`id`/`createdAt`/`updatedAt` defaulted, `graph` left null) and returns it for redirect/toast use.
 - `bun run typecheck` passes.
+
+---
+
+## 25. `fbc5c28` — 2026-09-20 — `generateSlug` util with adjective-animal names
+
+**Files:**
+- `features/workflows/lib/generateSlug.ts` (added — `generateSlug()`)
+- `package.json`, `bun.lock` — added `unique-names-generator@4.7.1`
+
+**Exact change:**
+- `generateSlug(): string`: `uniqueNamesGenerator({ dictionaries: [adjectives, animals], separator: "-", style: "lowerCase" })`, e.g. `brave-otter`.
+- Note: requested package name `unique-name-generator` does not exist on npm (404); used the real `unique-names-generator` (plural).
+
+**What it did:**
+- Gives workflows a random hyphenated slug for default names/URLs. Verified via `bun -e` import (e.g. `painful-basilisk`).
+- `bunx tsc --noEmit` passes.
