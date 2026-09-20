@@ -547,3 +547,18 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Fixes the 404 on workflow creation: `createWorkflowAction` (`features/workflows/actions.ts:14`) redirects to `/workflows/${workflow.id}` (plural), but the route only served singular `/workflow/<id>`, so every new workflow landed on the default Next 404 instead of the route's `Empty`-styled `not-found` card.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 31. `cedb684` — 2026-09-20 — Link workflow nav items to pages with active highlight
+
+**Files:**
+- `features/workflows/components/workflow-nav.tsx` (modified — `Link` + `usePathname` wiring in both collapsed and expanded lists)
+
+**Exact change:**
+- Added `import Link from "next/link"` and `import { usePathname } from "next/navigation"`, plus `const pathname = usePathname()` in `WorkflowNav`.
+- Both workflow lists (collapsed popover and expanded sidebar) now render `<SidebarMenuButton asChild isActive={pathname === \`/workflows/${workflow.id}\`}>` wrapping `<Link href={\`/workflows/${workflow.id}\`}><span>{workflow.name}</span></Link>`.
+
+**What it did:**
+- Each workflow in the sidebar links to its own `/workflows/{id}` page, and the currently open workflow shows as selected via `isActive`.
+- `npx tsc --noEmit` passes.
