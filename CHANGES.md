@@ -318,3 +318,18 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Expanded sidebar shows clean text-only workflow list; collapsed rail shows one workflow icon that pops the workflow list + create button, matching `design/collapsed-app-sidebar*.png`.
 - `bunx tsc --noEmit` passes.
+
+---
+
+## 17. `71fa731` — 2026-09-20 — Move WorkflowNav to features/workflows
+
+**Files:**
+- `features/workflows/components/workflow-nav.tsx` (added — `WorkflowNav` + `workflows` list, `"use client"`)
+- `components/app-sidebar.tsx` (modified — imports `WorkflowNav` from `@/features/workflows/components/workflow-nav`, drops moved code and now-unused `Plus`/`Workflow`/`Popover`/group imports)
+
+**Exact change:**
+- Pure move, no behavior change: same expanded text-only list and collapsed icon-button + uncontrolled `Popover` (`side="right" align="start"`, New-workflow button + `SidebarSeparator` + list).
+
+**What it did:**
+- Sidebar shell stays lean in `components/`; workflow nav now lives under `features/workflows/`, ready for future workflow feature work.
+- `bunx tsc --noEmit` passes.
