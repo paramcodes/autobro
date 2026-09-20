@@ -495,3 +495,21 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Sidebar nav renders real org-scoped workflows (newest first via `listWorkflows` ordering); no org → empty list, no hard error.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 28. `8883d0b` — 2026-09-20 — Workflow creation from sidebar nav
+
+**Files:**
+- `components/app-sidebar.tsx` (modified — imports + passes `createWorkflowAction`)
+- `features/workflows/components/workflow-nav.tsx` (modified — `createWorkflowAction` prop, `generateSlug` + `useTransition` create handler)
+
+**Exact change:**
+- `AppSidebar` (async server component) imports `createWorkflowAction` from `@/features/workflows/actions` and passes it as `<WorkflowNav workflows={workflows} createWorkflowAction={createWorkflowAction} />` (prop name ends in `Action` so the server-function reference crosses the server/client boundary per Next `server-and-client-boundary` guide).
+- `WorkflowNav` (`"use client"`) accepts `createWorkflowAction: (name: string) => Promise<void>`, imports `generateSlug` from `@/features/workflows/lib/generateSlug`, and adds `handleCreate()` that generates a fresh `adjective-animal` slug then `startTransition(() => void createWorkflowAction(name))`.
+- Both New-workflow triggers wired: collapsed-popover `SidebarMenuButton` and expanded `SidebarGroupAction`, each with `onClick={handleCreate}` + `disabled={isPending}`. No direct server-action import in the client component.
+- Verified against `node_modules/next/dist/docs/01-app/02-guides/server-actions.md`, `server-and-client-boundary.md`, `forms.md`, `01-getting-started/07-mutating-data.md` (`Passing actions as props`, event-handler invocation).
+
+**What it did:**
+- Clicking New workflow creates a uniquely-named row via the existing authed `createWorkflowAction` (which `revalidatePath` + `redirect`s to `/workflows/[id]`).
+- `npm run typecheck` (`tsc --noEmit`) passes.
