@@ -1,6 +1,6 @@
 "use client"
 
-import { Plus } from "lucide-react"
+import { Plus, Workflow } from "lucide-react"
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs"
 
 import {
@@ -33,11 +33,11 @@ const workflows = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-1">
-            <div className="min-w-0 flex-1">
+          <SidebarMenuItem className="flex items-center gap-1 group-data-[collapsible=icon]:justify-center">
+            <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
               <OrganizationSwitcher
                 hidePersonal
                 afterCreateOrganizationUrl="/"
@@ -62,6 +62,7 @@ export function AppSidebar() {
                     isActive={index === 0}
                     tooltip={workflow}
                   >
+                    <Workflow />
                     <span>{workflow}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -72,7 +73,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem className="group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center">
             <UserButton />
           </SidebarMenuItem>
         </SidebarMenu>
