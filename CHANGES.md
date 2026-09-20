@@ -513,3 +513,23 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Clicking New workflow creates a uniquely-named row via the existing authed `createWorkflowAction` (which `revalidatePath` + `redirect`s to `/workflows/[id]`).
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 29. `f700405` — 2026-09-20 — Individual workflow `[id]` route shell
+
+**Files:**
+- `app/(dashboard)/workflow/[id]/page.tsx` (added — async server component, `params: Promise<{ id: string }>`, displays `id`)
+- `app/(dashboard)/workflow/[id]/loading.tsx` (added — centered `Spinner` from `@/components/ui/spinner`)
+- `app/(dashboard)/workflow/[id]/error.tsx` (added — `"use client"`, `{ error, retry }` props, `Empty` composition + retry `Button`)
+- `app/(dashboard)/workflow/[id]/not-found.tsx` (added — `Empty` composition + `Button asChild` `Link href="/"`)
+
+**Exact change:**
+- `page.tsx`: `export default async function Page({ params }: { params: Promise<{ id: string }> })`, `const { id } = await params`, renders `Workflow {id}` heading + `Workflow ID: {id}` line (per Next `page.md` / `dynamic-routes.md`: `params` is a promise, must `await`).
+- `loading.tsx`: no props, returns centered `<Spinner className="size-8" />` (per Next `loading.md`: instant Suspense fallback, no params).
+- `error.tsx`: `"use client"` first line, `useEffect(() => console.error(error), [error])`, `Empty > EmptyHeader(EmptyMedia icon TriangleAlert + EmptyTitle + EmptyDescription with digest) + EmptyContent(Button size="lg" onClick retry)` (per Next `error.md`: client boundary, `retry` stable in v16.3).
+- `not-found.tsx`: no props, `Empty > EmptyHeader(EmptyMedia icon SearchX + EmptyTitle "Workflow not found" + EmptyDescription) + EmptyContent(Button asChild Link "/")` (per Next `not-found.md`).
+
+**What it did:**
+- `/workflow/[id]` renders the dynamic id, streams a centered spinner while loading, shows an `Empty`-styled retry card on runtime errors, and an `Empty`-styled back-to-workflows card on `notFound()`.
+- `npm run typecheck` (`tsc --noEmit`) passes.
