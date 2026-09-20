@@ -1,5 +1,6 @@
 "use client"
 
+import { useTransition } from "react"
 import { Plus, Workflow as WorkflowIcon } from "lucide-react"
 
 import {
@@ -19,9 +20,24 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import type { Workflow } from "@/db/schema"
+import { generateSlug } from "@/features/workflows/lib/generateSlug"
 
-export function WorkflowNav({ workflows }: { workflows: Workflow[] }) {
+export function WorkflowNav({
+  workflows,
+  createWorkflowAction,
+}: {
+  workflows: Workflow[]
+  createWorkflowAction: (name: string) => Promise<void>
+}) {
   const { state } = useSidebar()
+  const [isPending, startTransition] = useTransition()
+
+  function handleCreate() {
+    const name = generateSlug()
+    startTransition(() => {
+      void createWorkflowAction(name)
+    })
+  }
 
   if (state === "collapsed") {
     return (
@@ -37,7 +53,10 @@ export function WorkflowNav({ workflows }: { workflows: Workflow[] }) {
               <PopoverContent side="right" align="start">
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton>
+                    <SidebarMenuButton
+                      onClick={handleCreate}
+                      disabled={isPending}
+                    >
                       <Plus />
                       <span>New workflow</span>
                     </SidebarMenuButton>
@@ -64,7 +83,11 @@ export function WorkflowNav({ workflows }: { workflows: Workflow[] }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Workflows</SidebarGroupLabel>
-      <SidebarGroupAction title="New workflow">
+      <SidebarGroupAction
+        title="New workflow"
+        onClick={handleCreate}
+        disabled={isPending}
+      >
         <Plus />
         <span className="sr-only">New workflow</span>
       </SidebarGroupAction>

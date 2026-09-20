@@ -3,6 +3,7 @@ import { OrganizationSwitcher, UserButton } from "@clerk/nextjs"
 import { auth } from "@clerk/nextjs/server"
 
 import { WorkflowNav } from "@/features/workflows/components/workflow-nav"
+import { createWorkflowAction } from "@/features/workflows/actions"
 import { listWorkflows } from "@/features/workflows/data"
 import {
   Sidebar,
@@ -34,7 +35,10 @@ export async function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <WorkflowNav workflows={workflows} />
+        <WorkflowNav
+          workflows={workflows}
+          createWorkflowAction={createWorkflowAction}
+        />
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
