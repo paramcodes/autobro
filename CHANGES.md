@@ -351,3 +351,23 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Narrowing the window (or any mobile viewport) keeps the collapsible icon sidebar on screen instead of hiding it with no way back.
 - `bunx tsc --noEmit` passes. (`bunx eslint` crashes repo-wide on a pre-existing `eslint-plugin-react` incompatibility, unrelated to this change.)
+
+---
+
+## 19. `1507907` — 2026-09-20 — Neon project setup (flat-cake-92718317)
+
+**Files:**
+- `neon.ts` (added — `defineConfig({})`)
+- `package.json`, `bun.lock` (added `@neon/config@1.7.2`, `@neon/env@1.4.3` via `neon config init`)
+- `.gitignore` (added `.neon`)
+- `skills-lock.json`, `.grok/skills/neon*/` (Neon skills installed)
+- MCP configs installed for codex/cursor/gemini-cli/github-copilot-cli/grok-build/opencode/vscode/windsurf/zed
+- `.env.local` (untracked, gitignored — holds `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH` pulled by `neon link`)
+
+**Exact change:**
+- Installed `neon@5.0.0` via `bun install -g` (npm registry unreachable from this machine).
+- `neon login` needs an interactive browser; link/deploy still succeeded on ambient auth.
+- `neon link --project-id flat-cake-92718317 --branch production`, `neon config init`, trimmed `neon.ts` to `defineConfig({})`, `neon deploy` → "No changes — branch production already matches the policy."
+
+**What it did:**
+- Repo linked to Neon project `flat-cake-92718317` (`production` branch); deploy policy in place; DB URLs available locally via ignored `.env.local`, never committed.
