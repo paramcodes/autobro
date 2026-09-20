@@ -581,3 +581,23 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - `/workflows/[id]` now renders the editor shell: resizable canvas/logs column + inspector, with placeholder labels until real canvas/logs/inspector components land.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 33. `PENDING` — 2026-09-20 — Trigger.dev setup (proj_kxwhzprencmwzpqaxxdy)
+
+**Files:**
+- `package.json`, `bun.lock` — added `@trigger.dev/sdk@^4.6.3`, `@trigger.dev/build@^4.6.3` (dev)
+- `trigger.config.ts` (added — `defineConfig` with `project: "proj_kxwhzprencmwzpqaxxdy"`, `dirs: ["./src/trigger"]`, `maxDuration: 3600`)
+- `src/trigger/hello.ts` (added — exported `helloWorld` task via `task()` from `@trigger.dev/sdk`)
+- `tsconfig.json` (modified — added `trigger.config.ts` to `include`)
+- `.gitignore` (modified — added `.trigger`)
+
+**Exact change:**
+- Manual setup per https://trigger.dev/docs/manual-setup (no MCP server available, `init` CLI needs interactive login so config was written by hand).
+- `helloWorld` task id `hello-world` takes optional `{ name }`, logs and returns greeting + timestamp. Imports only from `@trigger.dev/sdk`, exported, no `node-fetch`, no `Promise.all` around wait/trigger APIs.
+- `**/*.ts` already covered new files; `trigger.config.ts` added explicitly to `include` per spec.
+
+**What it did:**
+- `bun run typecheck` (`tsc --noEmit`) passes.
+- Still needs user steps: `npx trigger.dev@latest login` + dev `TRIGGER_SECRET_KEY` in `.env`, then `npx trigger.dev@latest dev` to confirm `hello-world` appears in dashboard.
