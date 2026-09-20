@@ -421,3 +421,30 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 - Table live on Neon `production` branch. Verified round-trip via `db` client: insert scratch row (uuid default + jsonb graph round-trips) → select → delete, 0 rows left.
 - `bun run typecheck` passes; `bunx drizzle-kit check` passes.
 - `WorkflowNav` still hardcoded; swapping it to DB rows is a follow-up.
+
+---
+
+## 23. `b1f5e40` — 2026-09-20 — `listWorkflows` data function
+
+**Files:**
+- `features/workflows/data.ts` (added — `listWorkflows(orgId)`)
+
+**Exact change:**
+- `listWorkflows(orgId)`: `db.select().from(workflows).where(eq(workflows.orgId, orgId)).orderBy(desc(workflows.createdAt))`, modeled on drizzle select pattern.
+
+**What it did:**
+- Gives dashboard/sidebar a per-org, newest-first workflow query. No UI wiring yet.
+
+---
+
+## 24. 2026-09-20 — `createWorkflow` data function
+
+**Files:**
+- `features/workflows/data.ts` (modified — added `createWorkflow(orgId, name)`)
+
+**Exact change:**
+- `createWorkflow(orgId: string, name: string)`: `db.insert(workflows).values({ orgId, name }).returning()`, destructures `[workflow]` and returns the single row.
+
+**What it did:**
+- Mirrors `listWorkflows` style for writes: inserts one `workflows` row (`id`/`createdAt`/`updatedAt` defaulted, `graph` left null) and returns it for redirect/toast use.
+- `bun run typecheck` passes.
