@@ -2,6 +2,7 @@ import { cookies } from "next/headers"
 
 import { AppSidebar } from "@/components/app-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 export default async function DashboardLayout({
   children,
@@ -13,8 +14,10 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar />
-      <SidebarInset>{children}</SidebarInset>
+      <TooltipProvider>
+        <AppSidebar />
+        <SidebarInset>{children}</SidebarInset>
+      </TooltipProvider>
     </SidebarProvider>
   )
 }
