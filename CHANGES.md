@@ -600,4 +600,4 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - `bun run typecheck` (`tsc --noEmit`) passes.
-- Still needs user steps: `npx trigger.dev@latest login` + dev `TRIGGER_SECRET_KEY` in `.env`, then `npx trigger.dev@latest dev` to confirm `hello-world` appears in dashboard.
+- Verified end-to-end 2026-09-20: user completed `npx trigger.dev@latest login` (acct `sparamveer1001@gmail.com`, project `autobro` / `proj_kxwhzprencmwzpqaxxdy`), dev `TRIGGER_SECRET_KEY` stored in gitignored `.env.local` (never committed), `npx trigger.dev@latest dev` → `Local worker ready on branch: default [node] -> 20260920.1`, triggered `hello-world` (`{ name: "dev-check" }`) → `run_06gbtoi17emi0oudm7kltc0q01`, worker logged `Hello dev-check!` → Success (32ms). Confirm `hello-world` in dashboard: https://cloud.trigger.dev/orgs/param-f363/projects/autobro-tfla .
