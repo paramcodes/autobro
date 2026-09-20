@@ -8,6 +8,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 Commit every time after each iteration / working change. Inspect `git status`, `git diff`, stage only intended files, write concise Conventional Commit message. Never commit secrets. Do not push unless explicitly asked.
 
+# Changes log — keep CHANGES.md updated
+
+After each working change / commit, append an entry to `CHANGES.md`: date, commit hash, files touched, exact change, and what that change did. Keep it chronological and structured. Update it in the same iteration as the code change — never batch it later. Never record secrets.
+
 # Auth — Clerk default-deny (proxy.ts)
 
 - Routing model is default-deny: only `/sign-in(.*)` and `/sign-up(.*)` are
