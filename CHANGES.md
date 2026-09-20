@@ -652,3 +652,20 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Clicking Run now shows live status/output of the `hello-world` run updating in the right sidebar without polling.
 - `npx tsc --noEmit` passes.
+
+---
+
+## 37. `d6e5767` — 2026-09-20 — Extract canvas div into WorkflowCanvas component
+
+**Files:**
+- `features/workflows/components/workflow-canvas.tsx` (added — `WorkflowCanvas()`, `"use client"`)
+- `features/workflows/components/workflow-shell.tsx` (modified — renders `<WorkflowCanvas />`)
+
+**Exact change:**
+- Moved the top canvas panel content out of `WorkflowShell` into new `WorkflowCanvas` component, mirroring the `RightSidebar` extraction pattern.
+- Canvas div contents unaltered: `<div className="flex size-full items-center justify-center">Canvas</div>`.
+- `WorkflowShell` imports `WorkflowCanvas` from `./workflow-canvas` and renders it inside the top `ResizablePanel` (`minSize="18rem"`).
+
+**What it did:**
+- `/workflows/[id]` canvas panel renders identically, with canvas UI isolated for future work.
+- `npm run typecheck` (`tsc --noEmit`) passes.
