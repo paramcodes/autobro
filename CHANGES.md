@@ -371,3 +371,16 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Repo linked to Neon project `flat-cake-92718317` (`production` branch); deploy policy in place; DB URLs available locally via ignored `.env.local`, never committed.
+
+---
+
+## 20. `d2f0329` — 2026-09-20 — Symlink Neon skills into `.agents/skills`
+
+**Files:**
+- `.agents/skills/neon*/` (8 symlinks → `../../.grok/skills/neon*/`)
+
+**Exact change:**
+- `neon skills -y` only detects the `.grok/` project folder (its supported-agent list has no generic `.agents` target), so the 8 real skill dirs landed in `.grok/skills/` only. Added relative symlinks from `.agents/skills/`, same style as the existing clerk symlinks.
+
+**What it did:**
+- Neon skills now resolve from both `.agents/skills/` and `.grok/skills/`; `.grok/` stays canonical so `neon skills update` keeps working in place; `skills-lock.json` untouched (tracks source/hash, not path).
