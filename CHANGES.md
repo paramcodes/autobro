@@ -793,7 +793,7 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 ---
 
-## 46. Uncommitted — 2026-09-21 — `PROMPTS.md` prompt log
+## 46. `f274793` — 2026-09-21 — `PROMPTS.md` prompt log
 
 **Files:**
 - `PROMPTS.md` (added — prompt/why/change/learn log reconstructed from `git log` + `CHANGES.md` up to `07823ef`)
