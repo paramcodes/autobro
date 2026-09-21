@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useState } from "react"
+import { useTheme } from "next-themes"
 import {
   ReactFlow,
   Background,
@@ -35,6 +36,7 @@ const initialNodes: Node[] = [
 const initialEdges: Edge[] = [{ id: "n1-n2", source: "n1", target: "n2" }]
 
 export function WorkflowCanvas() {
+  const { resolvedTheme } = useTheme()
   const [nodes, setNodes] = useState<Node[]>(initialNodes)
   const [edges, setEdges] = useState<Edge[]>(initialEdges)
 
@@ -59,6 +61,7 @@ export function WorkflowCanvas() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        colorMode={resolvedTheme === "dark" ? "dark" : "light"}
         connectionLineType={ConnectionLineType.SmoothStep}
         fitView
         connectionLineStyle={{ stroke: "var(--border)" }}
