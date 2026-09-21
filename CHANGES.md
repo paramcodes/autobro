@@ -803,3 +803,18 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Anyone new can learn the project history (intent + effect) without reading every diff; technical but beginner-friendly.
+
+---
+
+## 47. Uncommitted — 2026-09-21 — `PROMPTS2.md` full flat verbatim prompt log
+
+**Files:**
+- `PROMPTS2.md` (added — all 66 user prompts verbatim, flat chronological order, Why/Change/Learn per entry)
+
+**Exact change:**
+- Extracted all user prompts read-only from `~/.local/share/opencode/opencode.db` (23 sessions, `part` table user `text` parts, `2026-09-20` → `2026-09-21`).
+- Same Prompt → Why → Change → Learn structure as `PROMPTS.md`, plus beginner glossary. Secrets in 2 prompts redacted (Clerk keys, Trigger dev key) — never logged verbatim.
+- `PROMPTS.md` left untouched (curated/intent-grouped); `PROMPTS2.md` is the complete archive (every prompt, flat, verbatim).
+
+**What it did:**
+- Full prompt history preserved verbatim for learning/audit; anyone can trace each change back to the exact words that caused it.
