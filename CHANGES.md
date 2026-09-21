@@ -855,3 +855,16 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Workflow diagrams sync across clients with multiplayer cursors; users authenticated as their Clerk identity (name/avatar/color). `bun run typecheck` passes; `next build` succeeds (`/api/liveblocks-auth`, `/api/liveblocks-users`, `/workflows/[id]` all registered). Repo-wide `bun run lint` crashes on a pre-existing `eslint-plugin-react`/ESLint-10 incompatibility (fails on untouched files too). Still required: paste real `LIVEBLOCKS_SECRET_KEY` from https://liveblocks.io/dashboard into `.env.local`.
+
+## 50. `50eb3af` — 2026-09-21 — Liveblocks avatar panel in workflow canvas
+
+**Files:**
+- `features/workflows/components/collaborators-panel.tsx` (added — `CollaboratorsPanel` wrapping `AvatarStack max={4} size={28}` from `@liveblocks/react-ui` in a `bg-background/80 backdrop-blur` pill)
+- `features/workflows/components/workflow-canvas.tsx` (modified — imports `Panel` from `@xyflow/react` + `CollaboratorsPanel`; renders `<Panel position="top-right" className="m-4"><CollaboratorsPanel /></Panel>` inside `<ReactFlow>` after `<Cursors />`; prettier reflow of the `useLiveblocksFlow` destructure)
+- `liveblocks.config.ts` (modified — added missing `color: string` to `UserMeta.info` to match `identifyUser`/`resolveUsers` payloads; prettier semicolon style)
+
+**Exact change:**
+- Presence stack pinned to the canvas viewport via React Flow's native `<Panel>`, so it survives pan/zoom without touching the `WorkflowShell` resizable layout. `AvatarStack` resolves names/avatars through the existing `resolveUsers` endpoint with `+N` overflow past 4 users.
+
+**What it did:**
+- Every collaborator in the workflow room now sees who else is present (self + others, tooltip names, color rings) top-right of the canvas. `bun run typecheck` passes; prettier clean; repo-wide `bun run lint` still crashes on the pre-existing `eslint-plugin-react`/ESLint-10 incompatibility (untouched files fail identically).
