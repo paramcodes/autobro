@@ -757,3 +757,49 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Canvas now renders Start + Open URL on load; the `open-url` registry entry resolves its Globe icon/accent via the existing `StepNode`, with target + source handles since `kind` is `action`.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 44. `9bb343c` — 2026-09-21 — Custom StepNode design with node registry
+
+**Files:**
+- `features/workflows/nodes/node-registry.ts` (added — `nodeRegistry`, `StepNodeData`, `StepNodeType`)
+- `features/workflows/components/step-node.tsx` (added — memoized `StepNode`)
+- `features/workflows/components/workflow-canvas.tsx` (modified — `nodeTypes`, `start`-only seed)
+- `templates/node-registry.ts`, `templates/step-node.tsx` (added — mirrors)
+
+**Exact change:**
+- `nodeRegistry`: `start` (trigger, `MousePointerClick`, blue, no fields) + `open-url` (action, `Globe`, emerald, `url` field); `StepNodeData` is plain JSON (`type/kind/title/values`, `kind`/`title` denormalized for server reads).
+- `StepNode`: icon chip + title card, left `target` handle hidden when `kind === "trigger"`, right `source` handle always; selected ring via `ring-ring`.
+- Canvas: `nodeTypes={{ step: StepNode }}`, seed replaced (`n1/n2` → single `start`), edges emptied.
+
+**What it did:**
+- Canvas renders designed trigger cards instead of generic React Flow defaults; adding a node type is now a one-entry registry change.
+- `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 45. `07823ef` — 2026-09-21 — Revert: remove open-url node from initial canvas
+
+**Files:**
+- `features/workflows/components/workflow-canvas.tsx` (modified — removed `open-url-1`)
+
+**Exact change:**
+- Deleted the `open-url-1` entry (`y: 150`) added in `7c74c8f`; seed back to single `start` node.
+
+**What it did:**
+- Canvas loads with Start only; `open-url` stays available in the registry but is not seeded.
+- `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 46. Uncommitted — 2026-09-21 — `PROMPTS.md` prompt log
+
+**Files:**
+- `PROMPTS.md` (added — prompt/why/change/learn log reconstructed from `git log` + `CHANGES.md` up to `07823ef`)
+
+**Exact change:**
+- One entry per user intent (scaffold → auth → dashboard → Neon/Drizzle → workflows → Trigger.dev → React Flow → StepNode system), each with Prompt / Why / Change / Learn plus a beginner glossary. Companion to commit-level `CHANGES.md`.
+
+**What it did:**
+- Anyone new can learn the project history (intent + effect) without reading every diff; technical but beginner-friendly.
