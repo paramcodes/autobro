@@ -743,3 +743,17 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Agents no longer rely on stale training data for React Flow API/components/usage; they resolve current docs before writing code.
+
+---
+
+## 43. `7c74c8f` — 2026-09-21 — Add open-url node to initial canvas nodes
+
+**Files:**
+- `features/workflows/components/workflow-canvas.tsx` (modified — appended `open-url-1` to `initialNodes`)
+
+**Exact change:**
+- Added `{ id: "open-url-1", type: "step", position: { x: 0, y: 150 }, data: { type: "open-url", kind: "action", title: "Open URL", values: {} } }` below the `start` node. Same `x`, `y: 150` stacks it vertically. `initialEdges` left empty.
+
+**What it did:**
+- Canvas now renders Start + Open URL on load; the `open-url` registry entry resolves its Globe icon/accent via the existing `StepNode`, with target + source handles since `kind` is `action`.
+- `npm run typecheck` (`tsc --noEmit`) passes.
