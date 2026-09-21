@@ -34,6 +34,7 @@ export function WorkflowRoom({
 }) {
   return (
     <LiveblocksProvider
+      throttle={16}
       authEndpoint="/api/liveblocks-auth"
       resolveUsers={async ({ userIds }) => fetchUsers(userIds)}
     >
