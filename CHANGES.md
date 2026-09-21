@@ -835,7 +835,7 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 ---
 
-## 49. `liveblocks-sync` — 2026-09-21 — Liveblocks Sync for React Flow (ID-token auth via Clerk)
+## 49. `9ec8054` — 2026-09-21 — Liveblocks Sync for React Flow (ID-token auth via Clerk)
 
 **Files:**
 - `package.json`, `bun.lock` (modified — added `@liveblocks/client`, `@liveblocks/react`, `@liveblocks/react-ui`, `@liveblocks/react-flow`, `@liveblocks/node`, all pinned `3.24.1`)
