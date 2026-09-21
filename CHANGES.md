@@ -882,3 +882,17 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Clicking a palette entry drops that node in the middle of the current view with a unique id, numbered action titles (`Open URL 1`, `Open URL 2`, …), and at most one trigger on the canvas. `bun run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 52. `beefb88` — 2026-09-21 — Multiline field flag with textarea rendering
+
+**Files:**
+- `features/workflows/nodes/node-registry.ts` (modified — added optional `multiline?: boolean` to `NodeField`)
+- `features/workflows/components/right-sidebar.tsx` (modified — `FieldInput` branches on `field.multiline`: renders `Textarea` when true, `Input` otherwise; removed multiline TODO)
+
+**Exact change:**
+- `NodeField` gains `multiline?: boolean` so any registry entry can opt into multi-line rendering. `FieldInput` keeps the same `field`/`value`/`onChange` props and `Inspector` usage is unchanged — it already renders one `FieldInput` per field, so flagged fields automatically get a textarea.
+
+**What it did:**
+- Editors can mark a field `{ multiline: true }` and the inspector shows a larger multi-line textarea instead of a single-line input. `npx tsc --noEmit` passes.
