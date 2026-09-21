@@ -806,7 +806,7 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 ---
 
-## 47. Uncommitted — 2026-09-21 — `PROMPTS2.md` full flat verbatim prompt log
+## 47. `ed99093` — 2026-09-21 — `PROMPTS2.md` full flat verbatim prompt log
 
 **Files:**
 - `PROMPTS2.md` (added — all 66 user prompts verbatim, flat chronological order, Why/Change/Learn per entry)
