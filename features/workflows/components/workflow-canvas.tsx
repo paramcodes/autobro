@@ -6,10 +6,12 @@ import {
   Background,
   Controls,
   ConnectionLineType,
+  Panel,
 } from "@xyflow/react"
 import type { Edge, NodeTypes } from "@xyflow/react"
 import { Cursors, useLiveblocksFlow } from "@liveblocks/react-flow"
 
+import { CollaboratorsPanel } from "./collaborators-panel"
 import { StepNode } from "./step-node"
 import type { StepNodeType } from "../nodes/node-registry"
 
@@ -28,18 +30,12 @@ const initialEdges: Edge[] = []
 
 export function WorkflowCanvas() {
   const { resolvedTheme } = useTheme()
-  const {
-    nodes,
-    edges,
-    onNodesChange,
-    onEdgesChange,
-    onConnect,
-    onDelete,
-  } = useLiveblocksFlow<StepNodeType, Edge>({
-    suspense: true,
-    nodes: { initial: initialNodes },
-    edges: { initial: initialEdges },
-  })
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onDelete } =
+    useLiveblocksFlow<StepNodeType, Edge>({
+      suspense: true,
+      nodes: { initial: initialNodes },
+      edges: { initial: initialEdges },
+    })
 
   return (
     <div className="size-full">
@@ -71,6 +67,9 @@ export function WorkflowCanvas() {
         <Background />
         <Controls />
         <Cursors />
+        <Panel position="top-right" className="m-4">
+          <CollaboratorsPanel />
+        </Panel>
       </ReactFlow>
     </div>
   )
