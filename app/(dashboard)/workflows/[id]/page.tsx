@@ -1,4 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
+import { ReactFlowProvider } from "@xyflow/react";
 
 import { ensureWorkflowRoom } from "@/lib/liveblocks-server";
 import { WorkflowRoom } from "@/features/workflows/components/workflow-room";
@@ -25,7 +26,9 @@ export default async function Page({
 
   return (
     <WorkflowRoom workflowId={id}>
-      <WorkflowShell workflowId={id} />
+      <ReactFlowProvider>
+        <WorkflowShell workflowId={id} />
+      </ReactFlowProvider>
     </WorkflowRoom>
   )
 }
