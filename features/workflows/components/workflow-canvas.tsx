@@ -14,26 +14,27 @@ import {
 import type {
   Edge,
   Node,
+  NodeTypes,
   OnConnect,
   OnEdgesChange,
   OnNodesChange,
 } from "@xyflow/react"
 
-const initialNodes: Node[] = [
+import { StepNode } from "./step-node"
+import { StepNodeType } from "../nodes/node-registry"
+
+const nodeTypes: NodeTypes = { step: StepNode }
+
+const initialNodes: StepNodeType[] = [
   {
-    id: "n1",
+    id: "start",
+    type: "step",
     position: { x: 0, y: 0 },
-    data: { label: "Node 1" },
-    type: "input",
-  },
-  {
-    id: "n2",
-    position: { x: 0, y: 100 },
-    data: { label: "Node 2" },
+    data: { type: "start", kind: "trigger", title: "Start", values: {} },
   },
 ]
 
-const initialEdges: Edge[] = [{ id: "n1-n2", source: "n1", target: "n2" }]
+const initialEdges: Edge[] = []
 
 export function WorkflowCanvas() {
   const { resolvedTheme } = useTheme()
@@ -56,6 +57,7 @@ export function WorkflowCanvas() {
   return (
     <div className="size-full">
       <ReactFlow
+        nodeTypes={nodeTypes}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
