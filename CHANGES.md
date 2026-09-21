@@ -702,3 +702,31 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Dragging a new connection between handles now previews a stepped line; existing edges (default bezier) unchanged — the prop only affects the drag preview.
 - `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 40. `408a651` — 2026-09-20 — Connection/edge lines switched to smoothstep
+
+**Files:**
+- `features/workflows/components/workflow-canvas.tsx` (modified — `connectionLineType`, `defaultEdgeOptions`, edge styling)
+
+**Exact change:**
+- Changed `connectionLineType` from `ConnectionLineType.Step` to `ConnectionLineType.SmoothStep`, set `defaultEdgeOptions` type to `"smoothstep"`, and styled edges/connection line with `var(--border)`.
+
+**What it did:**
+- New and existing edges render as rounded orthogonal smoothstep lines matching the app border token.
+- `npm run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 41. `a5715ca` — 2026-09-21 — Sync React Flow colorMode with app theme
+
+**Files:**
+- `features/workflows/components/workflow-canvas.tsx` (modified — `useTheme` + `colorMode` prop)
+
+**Exact change:**
+- Imported `useTheme` from `next-themes`, read `resolvedTheme`, and passed `colorMode={resolvedTheme === "dark" ? "dark" : "light"}` to `<ReactFlow>`.
+
+**What it did:**
+- Canvas, edges, and controls switch between light and dark along with the rest of the app (including `system` theme, via `resolvedTheme`).
+- `bunx tsc --noEmit` passes.
