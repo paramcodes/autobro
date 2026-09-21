@@ -730,3 +730,16 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Canvas, edges, and controls switch between light and dark along with the rest of the app (including `system` theme, via `resolvedTheme`).
 - `bunx tsc --noEmit` passes.
+
+---
+
+## 42. `75f276a` — 2026-09-21 — Require reactflow.dev llms.txt for React Flow usage
+
+**Files:**
+- `AGENTS.md` (modified — added React Flow docs rule)
+
+**Exact change:**
+- Added `# React Flow — never rely on training data` section: fetch `https://reactflow.dev/llms.txt` first, follow linked pages for exact API, heed versioned props/handlers/deprecations.
+
+**What it did:**
+- Agents no longer rely on stale training data for React Flow API/components/usage; they resolve current docs before writing code.
