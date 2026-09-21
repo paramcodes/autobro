@@ -868,3 +868,17 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Every collaborator in the workflow room now sees who else is present (self + others, tooltip names, color rings) top-right of the canvas. `bun run typecheck` passes; prettier clean; repo-wide `bun run lint` still crashes on the pre-existing `eslint-plugin-react`/ESLint-10 incompatibility (untouched files fail identically).
+
+---
+
+## 51. `275c486` — 2026-09-21 — Palette click adds node at viewport center (single trigger)
+
+**Files:**
+- `features/workflows/components/right-sidebar.tsx` (modified — `Palette` uses `useReactFlow<StepNodeType>()`: `getNodes`/`addNodes`/`screenToFlowPosition`; `crypto.randomUUID()` id; trigger-singleton guard with Sonner `toast.error`; action titles numbered `${label} ${n}`)
+- `app/(dashboard)/workflows/[id]/page.tsx` (modified — `<WorkflowShell>` wrapped in `<ReactFlowProvider>` inside `<WorkflowRoom>` so canvas + sidebar share one store)
+
+**Exact change:**
+- Per [Hooks and Providers](https://reactflow.dev/learn/advanced-use/hooks-providers) + [`useReactFlow`](https://reactflow.dev/api-reference/hooks/use-react-flow) + [`<ReactFlowProvider />`](https://reactflow.dev/api-reference/react-flow-provider): provider sits above both `<WorkflowCanvas>` and `<RightSidebar>`, so `Palette` (outside `<ReactFlow>`) can call the shared store. Click position is the `.react-flow` pane center in screen pixels converted via `screenToFlowPosition` (window-center fallback). New node is `{ id: crypto.randomUUID(), type: "step", position, data: { type, kind, title, values: {} } }` added via `addNodes`, which flows through the Liveblocks `onNodesChange` mutation. Same-type actions count existing `data.type` matches for the suffix; triggers keep the base label and a second trigger shows `toast.error("Only one trigger node is allowed")` instead of adding.
+
+**What it did:**
+- Clicking a palette entry drops that node in the middle of the current view with a unique id, numbered action titles (`Open URL 1`, `Open URL 2`, …), and at most one trigger on the canvas. `bun run typecheck` (`tsc --noEmit`) passes.
