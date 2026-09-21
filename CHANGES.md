@@ -896,3 +896,19 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Editors can mark a field `{ multiline: true }` and the inspector shows a larger multi-line textarea instead of a single-line input. `npx tsc --noEmit` passes.
+
+---
+
+## 53. `cbd4d8e` — 2026-09-21 — Delete workflow with Liveblocks room cleanup
+
+**Files:**
+- `features/workflows/data.ts` (modified — added `deleteWorkflow(orgId, id)` scoped by `and(eq(workflows.orgId, orgId), eq(workflows.id, id))`)
+- `features/workflows/actions.ts` (modified — added `deleteWorkflowAction(workflowId)`: Clerk `auth()` org scope → `deleteWorkflow` → `liveblocks.deleteRoom(roomIdForWorkflow(workflowId))` in try/catch → `revalidatePath("/", "layout")` → `redirect("/")`)
+- `features/workflows/components/workflow-shell.tsx` (modified — passes `workflowId` to `<RightSidebar workflowId={workflowId} />`)
+- `features/workflows/components/right-sidebar.tsx` (modified — `RightSidebar`/`ActionsMenu` accept `workflowId`; menu item calls `deleteWorkflowAction` inside `useTransition` and is `disabled={isPending}` while in flight)
+
+**Exact change:**
+- DB access stays in `data.ts` (`deleteWorkflow`); the server action in `actions.ts` owns auth, Liveblocks `deleteRoom` on the `workflow-${id}` room (failure logged, DB delete still redirects), cache revalidation, and redirect home. The sidebar now knows its workflow via the `workflowId` prop threaded from `WorkflowShell`.
+
+**What it did:**
+- "Delete workflow" removes the org-scoped row plus its Liveblocks room, disables while deleting, and lands back on `/`. `bunx tsc --noEmit` passes.
