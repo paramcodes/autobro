@@ -1,27 +1,17 @@
 "use client"
 
-import { useCallback, useState } from "react"
 import { useTheme } from "next-themes"
 import {
   ReactFlow,
   Background,
   Controls,
   ConnectionLineType,
-  applyEdgeChanges,
-  applyNodeChanges,
-  addEdge,
 } from "@xyflow/react"
-import type {
-  Edge,
-  Node,
-  NodeTypes,
-  OnConnect,
-  OnEdgesChange,
-  OnNodesChange,
-} from "@xyflow/react"
+import type { Edge, NodeTypes } from "@xyflow/react"
+import { Cursors, useLiveblocksFlow } from "@liveblocks/react-flow"
 
 import { StepNode } from "./step-node"
-import { StepNodeType } from "../nodes/node-registry"
+import type { StepNodeType } from "../nodes/node-registry"
 
 const nodeTypes: NodeTypes = { step: StepNode }
 
@@ -38,21 +28,18 @@ const initialEdges: Edge[] = []
 
 export function WorkflowCanvas() {
   const { resolvedTheme } = useTheme()
-  const [nodes, setNodes] = useState<Node[]>(initialNodes)
-  const [edges, setEdges] = useState<Edge[]>(initialEdges)
-
-  const onNodesChange: OnNodesChange = useCallback(
-    (changes) => setNodes((snapshot) => applyNodeChanges(changes, snapshot)),
-    [],
-  )
-  const onEdgesChange: OnEdgesChange = useCallback(
-    (changes) => setEdges((snapshot) => applyEdgeChanges(changes, snapshot)),
-    [],
-  )
-  const onConnect: OnConnect = useCallback(
-    (params) => setEdges((snapshot) => addEdge(params, snapshot)),
-    [],
-  )
+  const {
+    nodes,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    onDelete,
+  } = useLiveblocksFlow<StepNodeType, Edge>({
+    suspense: true,
+    nodes: { initial: initialNodes },
+    edges: { initial: initialEdges },
+  })
 
   return (
     <div className="size-full">
@@ -63,6 +50,7 @@ export function WorkflowCanvas() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onDelete={onDelete}
         colorMode={resolvedTheme === "dark" ? "dark" : "light"}
         connectionLineType={ConnectionLineType.SmoothStep}
         fitView
@@ -82,6 +70,7 @@ export function WorkflowCanvas() {
       >
         <Background />
         <Controls />
+        <Cursors />
       </ReactFlow>
     </div>
   )

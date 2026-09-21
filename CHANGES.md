@@ -832,3 +832,26 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 **What it did:**
 - Single-workflow fetch scoped to both `orgId` and `id`; returns `undefined` when no row matches.
 - `bun run typecheck` (`tsc --noEmit`) passes.
+
+---
+
+## 49. `liveblocks-sync` — 2026-09-21 — Liveblocks Sync for React Flow (ID-token auth via Clerk)
+
+**Files:**
+- `package.json`, `bun.lock` (modified — added `@liveblocks/client`, `@liveblocks/react`, `@liveblocks/react-ui`, `@liveblocks/react-flow`, `@liveblocks/node`, all pinned `3.24.1`)
+- `liveblocks.config.ts` (added — `UserMeta` info `{ name, avatar, color }`, empty Presence/Storage/RoomEvent/ThreadMetadata/RoomInfo/GroupInfo/ActivitiesData)
+- `lib/liveblocks.ts` (added — shared `roomIdForWorkflow()` → `workflow-${id}`, client-safe)
+- `lib/liveblocks-server.ts` (added — `getLiveblocksClient()` singleton, `colorForUserId()` deterministic palette hash, `ensureWorkflowRoom()` via `getOrCreateRoom` with `defaultAccesses: ["room:write"]` + Clerk `organizationId`)
+- `app/api/liveblocks-auth/route.ts` (added — `POST` ID-token endpoint: Clerk `auth()` + `currentUser()` → `liveblocks.identifyUser({ userId, organizationId, groupIds: [] }, { userInfo })`)
+- `app/api/liveblocks-users/route.ts` (added — `POST { userIds }` → Clerk `getUserList`, returns `UserMeta["info"]` in request order; backs `resolveUsers`)
+- `features/workflows/components/workflow-room.tsx` (added — `LiveblocksProvider authEndpoint="/api/liveblocks-auth"` + `resolveUsers`, `RoomProvider id=workflow-${id}`, `ClientSideSuspense` fallback)
+- `features/workflows/components/workflow-canvas.tsx` (modified — `useState` + `applyNodeChanges/applyEdgeChanges/addEdge` replaced with `useLiveblocksFlow<StepNodeType, Edge>({ suspense: true })`; added `onDelete` + `<Cursors />`; kept custom `step` nodeTypes, theme `colorMode`, smoothstep edges)
+- `app/(dashboard)/workflows/[id]/page.tsx` (modified — server `ensureWorkflowRoom(id, orgId)` before render, wrapped in `<WorkflowRoom>`; failures caught so page renders and Room surfaces the error)
+- `app/globals.css` (modified — `@import` Liveblocks `react-ui` + `react-flow` styles)
+- `.env.local` (modified, gitignored — added empty `LIVEBLOCKS_SECRET_KEY=` placeholder)
+
+**Exact change:**
+- Followed `nextjs-react-flow` get-started guide adapted to ID tokens (no `publicApiKey` anywhere) + `authenticating-with-id-tokens`, `add-user-information`, `create-rooms-manually`, `type-liveblocks-correctly` skill references. Room-per-workflow isolation (`workflow-${id}`), org-compartmentalized via Clerk `organizationId`.
+
+**What it did:**
+- Workflow diagrams sync across clients with multiplayer cursors; users authenticated as their Clerk identity (name/avatar/color). `bun run typecheck` passes; `next build` succeeds (`/api/liveblocks-auth`, `/api/liveblocks-users`, `/workflows/[id]` all registered). Repo-wide `bun run lint` crashes on a pre-existing `eslint-plugin-react`/ESLint-10 incompatibility (fails on untouched files too). Still required: paste real `LIVEBLOCKS_SECRET_KEY` from https://liveblocks.io/dashboard into `.env.local`.
