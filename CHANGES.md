@@ -818,3 +818,17 @@ These show in `git status` / `git diff` and are included here so nothing is lost
 
 **What it did:**
 - Full prompt history preserved verbatim for learning/audit; anyone can trace each change back to the exact words that caused it.
+
+---
+
+## 48. `960ffc6` — 2026-09-21 — `getWorkflow(orgId, id)` scoped single-row lookup
+
+**Files:**
+- `features/workflows/data.ts` (modified — added `getWorkflow`)
+
+**Exact change:**
+- Added `export async function getWorkflow(orgId: string, id: string)` using `db.select().from(workflows).where(and(eq(workflows.orgId, orgId), eq(workflows.id, id))).limit(1)` and returning the first row (destructured `[workflow]`).
+
+**What it did:**
+- Single-workflow fetch scoped to both `orgId` and `id`; returns `undefined` when no row matches.
+- `bun run typecheck` (`tsc --noEmit`) passes.
