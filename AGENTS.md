@@ -30,6 +30,13 @@ columns, narrow with `Pick<Row, ...>` / `Omit<Row, ...>` rather than redeclaring
 literal type. Don't add an insert type where `db.insert(...).values()` already
 enforces the shape.
 
+# React Flow — never rely on training data
+
+Whenever touching React Flow API / components / usage in general, do not rely on
+training data — it is stale. Fetch `https://reactflow.dev/llms.txt` first to find
+the relevant docs, then follow the linked pages for the exact API before writing
+any code. Heed versioned props, handlers, and deprecation notices.
+
 <!-- TRIGGER.DEV SKILLS START -->
 ## Trigger.dev agent skills
 
